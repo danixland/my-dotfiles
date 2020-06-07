@@ -1,0 +1,28 @@
+/* COLORS SETTINGS */
+* {
+	accent:			rgba(255,191,0,1);
+	bg: 			rgba(28,28,28,1);
+	bg-trans: 		rgba(28,28,28,0.85);
+	bg-focus: 		rgba(40,40,40,1);
+	fg: 			rgba(136,136,136,1);
+	fg-list: 		rgba(187,187,187,1);
+	on: 			rgba(68,173,77,1);
+	off: 			rgba(227,64,57,1);
+	transparent:	rgba(255,255,255,0);
+}
+
+/*  FONT SETTINGS */
+* {
+
+	text-font: 			"Roboto Mono Nerd Font Regular 14";
+	text-font-title: 	"Roboto Mono Nerd Font Regular 36";
+}
+
+/* STYLE RESET */
+* {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	background-color: @transparent;
+	text-color: @fg;
+}

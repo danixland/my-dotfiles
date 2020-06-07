@@ -1,0 +1,123 @@
+#! /bin/bash
+#
+# is_installed - a script to find if a package
+# is currently installed on Slackware and derivates
+
+# var
+SHOWHELP=69
+E_NOPKGFOUND=70
+E_NOARGS=71
+PKGS_PATH="/var/log/packages"
+
+PROG=$(basename $0)
+
+
+# colors
+RED='\033[1;31m'
+ORANGE='\033[1;33m'
+GREEN='\033[1;32m'
+MAGENTA='\033[1;35m'
+NC='\033[0m'
+
+function search_file () {
+	SEARCH=$1
+	if [ -z $1 ]; then
+		#we don't have a string to search
+		echo -e "Usage: ${MAGENTA}$PROG ${NC}[file-search] ${GREEN}< filename >"
+		echo -e "${RED}exiting${NC}"
+		exit $E_NOARGS
+	fi
+	finding=$(grep -Hi "$SEARCH" ${PKGS_PATH}/*)
+	if [[ ! -z $finding ]]; then
+		old_IFS=$IFS
+		IFS=$'\n'
+		old_pkgname=""
+		for line in $finding; do
+			pkgname=$(echo $line | cut -d":" -f 1)
+			match=$(echo $line | cut -d":" -f 2)
+			if [[ $pkgname != $old_pkgname ]]; then
+				echo -e "${ORANGE}$(basename $pkgname)${NC}"
+			fi
+			old_pkgname=$pkgname
+			echo -en "\t${GREEN}$match${NC}\n"
+		done
+		IFS=${old_IFS}
+	else
+		echo -e "${ORANGE}no match for pattern ${GREEN}'$SEARCH' ${ORANGE}found"
+		echo -e "${RED}exiting${NC}"
+		exit $E_NOPKGFOUND
+	fi
+}
+
+function search_package () {
+	SEARCH=$1
+	if [ -z $1 ]; then
+		#we don't have a string to search
+		echo -e "Usage: ${MAGENTA}$PROG ${GREEN}<filename>"
+		echo -e "${RED}exiting${NC}"
+		exit $E_NOARGS
+	fi
+	finding=$(/bin/ls -1 $PKGS_PATH |grep -i "$SEARCH")
+	if [[ ! -z $finding ]]; then
+		echo -en "${GREEN}$finding\n"
+		echo -e "${NC}"
+	else
+		echo -e "${ORANGE}no package matching ${GREEN}'$SEARCH' ${ORANGE}found"
+		echo -e "${RED}exiting${NC}"
+		exit $E_NOPKGFOUND
+	fi
+}
+
+function info () {
+	SEARCH=$1
+	if [ -z $1 ]; then
+		#we don't have a string to search
+		echo -e "Usage: ${MAGENTA}$PROG ${ORANGE}info ${GREEN}<filename>"
+		echo -e "${RED}exiting${NC}"
+		exit $E_NOARGS
+	fi
+	finding=$(/bin/ls -1 $PKGS_PATH |grep -i "$SEARCH")
+	if [[ ! -z $finding ]]; then
+		less $PKGS_PATH/$finding
+	else
+		echo -e "${ORANGE}no package matching ${GREEN}'$SEARCH' ${ORANGE}found"
+		echo -e "${RED}exiting${NC}"
+		exit $E_NOPKGFOUND
+	fi
+}
+
+function help () {
+	echo
+	echo -e "${MAGENTA}$PROG${NC} -\tSearch for installed packages in the system"
+	echo -e "\t\tand show which package contains a specific file."
+	echo -e "${GREEN}USAGE:"
+	echo -e "\t${MAGENTA}$PROG ${ORANGE}[ file-search ] [ help ] ${GREEN}< item >"
+	echo -e "\t${MAGENTA}$PROG ${GREEN}<item>${NC} - Search between all installed packages for ${GREEN}item${NC}."
+	echo -e "\t${MAGENTA}$PROG ${ORANGE}file-search ${GREEN}<item>${NC} - Search for ${GREEN}item${NC} inside every package installed."
+	echo -e "\t${MAGENTA}$PROG ${ORANGE}help${NC} - Show this help and exit."
+	echo -e "${NC}"
+}
+# controlla se vengono passati parametri
+if [ -z $1 ]; then
+	help
+	exit $E_NOARGS
+else
+	case $1 in
+		"file-search" )
+			search_file $2
+			;;
+		"info" )
+			info $2
+			;;
+		"help" )
+			help
+			exit $SHOWHELP
+			;;
+		* )
+			search_package $1
+			;;
+	esac
+fi
+
+
+exit

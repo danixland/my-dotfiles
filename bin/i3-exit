@@ -1,0 +1,24 @@
+#!/bin/bash
+rofi_command="rofi -theme blackpearl/i3exit.rasi"
+
+NO="ﰸ"
+YES=""
+
+options="$YES\n$NO"
+chosen="$(echo -e "$options" | $rofi_command -dmenu -selected-row 1)"
+case $chosen in
+    "$YES")
+		# take wallpaper.sh down with you
+		for pid in $(cat /tmp/wallpaper.pid); do
+			# sending all term signals. hopefully one of them will work!
+			kill -15 $pid
+			kill -1 $pid
+			kill -9 $pid
+		done
+		rm /tmp/wallpaper.pid
+        i3-msg exit
+        ;;
+    "$NO")
+        exit 0
+        ;;
+esac

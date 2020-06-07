@@ -1,0 +1,7 @@
+#! /bin/sh
+
+i3lock-blur &
+sleep 3
+dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
+exit
+

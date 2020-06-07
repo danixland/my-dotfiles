@@ -1,0 +1,80 @@
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+XTerm*pointerColor: #16A085
+XTerm*faceName: Fixed
+XTerm*faceSize: 11
+
+*background:            #272827
+*foreground:            #657b83
+*fading:                15
+*fadeColor:             black
+*cursorColor:           #16A085
+*pointerColorBackground:#2B2C2B
+*pointerColorForeground:#16A085
+
+! special
+*.foreground:   #f5f5f5
+*.background:   #303030
+*.cursorColor:  #f5f5f5
+
+! black
+*.color0:       #303030
+*.color8:       #424242
+
+! red
+*.color1:       #d32f2f
+*.color9:       #e57373
+
+! green
+*.color2:       #388e3c
+*.color10:      #81c784
+
+! yellow
+*.color3:       #f57c00
+*.color11:      #ffb74d
+
+! blue
+*.color4:       #303f9f
+*.color12:      #7986cb
+
+! magenta
+*.color5:       #c51162
+*.color13:      #ff4081
+
+! cyan
+*.color6:       #1976d2
+*.color14:      #64b5f6
+
+! white
+*.color7:       #bdbdbd
+*.color15:      #f5f5f5
+
+
+XTerm*background: #303030
+XTerm*foreground: #f5f5f5
+XTerm*reverseVideo: on
+XTerm*selectToClipboard: true
+
+URxvt*termName: rxvt-256color
+URxvt.font: xft:Droid Sans Mono for Powerline:size=10,style=regular
+URxvt.geometry: 120x30
+URxvt.depth: 32
+URxvt.background:	[80]#303030
+URxvt*scrollBar:                      false
+URxvt*mouseWheelScrollPage:           false
+URxvt*cursorBlink:                    true
+URxvt*cursorUnderline:                true
+URxvt*.foreground: 		      #f5f5f5
+URxvt*cursorColor:		      #f5f5f5
+URxvt*saveLines:                      5000
+URxvt.internalBorder: 1
+
+URxvt.colorIT:      #81c784
+URxvt.colorBD:      #f5f5f5
+URxvt.colorUL:      #7986cb

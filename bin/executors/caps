@@ -1,0 +1,42 @@
+#! /bin/bash
+
+# Check caps lock and numlock status and display using icons
+
+
+CAPS=$(xset -q |grep Caps |awk -F ' ' '{ print $4 }')
+NUMS=$(xset -q |grep Caps |awk -F ' ' '{ print $8 }')
+
+function num_lock () {
+	if [[ $NUMS == "on" ]]; then
+		echo "/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/num-lock-on.svg"
+	else
+		echo "/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/num-lock-off.svg"
+	fi
+}
+
+function caps_lock () {
+	if [[ $CAPS == "on" ]]; then
+		echo "/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/caps-lock-on.svg"
+	else
+		echo "/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/caps-lock-off.svg"
+	fi
+}
+
+case $1 in
+	-n )
+		num_lock
+		;;
+	-c )
+		caps_lock
+		;;
+esac
+
+
+
+
+
+
+if [[ $CLOCK == "true" && $NLOCK == "true" ]]; then
+	echo "/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/caps-lock-on.svg"
+	echo "/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/num-lock-on.svg"
+fi

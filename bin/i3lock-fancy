@@ -1,0 +1,60 @@
+#! /bin/bash
+
+CACHE=$HOME/.cache/i3lockblur
+TMPBG=$CACHE/screen.png
+NOW=$(date +'%d %b %Y')
+FACE=~/.face
+USER=$CACHE/face.png
+RES=$(xrandr | grep 'current' | sed -E 's/.*current\s([0-9]+)\sx\s([0-9]+).*/\1x\2/')
+
+if [[ ! -d $CACHE ]]; then
+	mkdir -p $CACHE
+fi
+
+convert $FACE -resize 100x100 -alpha set \( \
+	+clone -distort DePolar 0 -virtual-pixel HorizontalTile \
+	-background None -distort Polar 0\
+	\) -compose Dst_In -composite -trim +repage $USER
+
+ffmpeg -f x11grab -video_size $RES -y -i $DISPLAY -i $USER \
+	-filter_complex "boxblur=7:15,overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" \
+	-vframes 1 $TMPBG -loglevel quiet
+
+slowfade () {
+    dis=$(echo -n "$DISPLAY" | tr -c '[:alnum:]' _)
+    ifc='com.github.chjj.compton'
+    obj='/com/github/chjj/compton'
+    if [[ "$1" == "start" ]]; then
+        dbus-send --print-reply --dest=$ifc.$dis \
+            $obj $ifc.opts_set string:fade_in_step double:0.02
+        dbus-send --print-reply --dest=$ifc.$dis \
+            $obj $ifc.opts_set string:fade_out_step double:0.02
+    else
+        dbus-send --print-reply --dest=$ifc.$dis \
+            $obj $ifc.opts_set string:fade_in_step double:0.1
+        dbus-send --print-reply --dest=$ifc.$dis \
+            $obj $ifc.opts_set string:fade_out_step double:0.1
+    fi
+}
+
+FG_COLOR=fefefeff #fefefeff
+RING_COLOR=31313aff #31313aff
+WRONG_COLOR=f82a11aa #f82a11aa
+HLIGHT_COLOR=ffbf00ff #ffbf00ff
+VERIF_COLOR=fefefe66 #fefefe66
+
+slowfade start
+i3lock -n --force-clock -i $TMPBG \
+	--indpos="w/2:h/2" --timepos="w/2:h/2-170" --datepos="w/2:h/2-100" --greeterpos="w/2:h/2-70" \
+	--insidevercolor=$VERIF_COLOR --insidewrongcolor=$WRONG_COLOR --insidecolor=fefefe00 \
+	--ringvercolor=$VERIF_COLOR --ringwrongcolor=$WRONG_COLOR --ringcolor=$RING_COLOR \
+	--keyhlcolor=$HLIGHT_COLOR --bshlcolor=$HLIGHT_COLOR --separatorcolor=00000000 \
+	--datecolor=$FG_COLOR --timecolor=$FG_COLOR --greetercolor=$FG_COLOR \
+	--timestr="%H" --timesize=70 \
+	--datestr="%M" --datesize=70 \
+	--greetertext="$NOW" --greetersize=25\
+	--line-uses-inside --radius 50 --ring-width 2 --indicator \
+	--veriftext=""  --wrongtext="" --noinputtext="" \
+	--clock --date-font="Roboto" --time-font="Roboto"
+sleep 1
+slowfade end

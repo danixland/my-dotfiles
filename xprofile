@@ -1,0 +1,16 @@
+#! /bin/sh
+
+xbacklight -set 100 &
+# ~/.fehbg &
+~/bin/wallpaper.sh &
+#wicd-client --tray &
+#lxqt-powermanagement &
+setxkbmap -layout it &
+numlockx &
+syndaemon -k -i 2 -d &
+#xautolock -time 10 -locker i3lock-wrapper -notify 30 -notifier "notify-send 'locking the system' '30 seconds before locking system.' --icon=dialog-warning" &
+compton --dbus --config ~/.config/compton.conf &
+conky -c ~/.config/conky/qlocktwo.conkyrc &
+xdg-user-dirs-update &
+
+

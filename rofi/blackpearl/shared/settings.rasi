@@ -1,0 +1,19 @@
+configuration {
+	modi: "window,drun,ssh";
+	font: "Droid Sans Mono 12";
+    /*drun-display-format: "{icon} {name}\n<span weight='light' size='small'><i>{generic}</i></span>";*/
+	drun-display-format: "{icon} <span weight='light' size='small'><i>{name}</i></span>";
+    display-drun: "Apps";
+	show-icons: true;
+	icon-theme: "breeze-dark";
+	hide-scrollbar: true;
+	cycle: true;
+    fullscreen: true;
+	sidebar-mode: false;
+	terminal: "urxvt";
+	ssh-client: "ssh";
+	ssh-command: "{terminal} -e {ssh-client} {host}";
+	run-command: "{cmd}";
+	run-shell-command: "{terminal} -e {cmd}";
+	cache-dir: "/home/danix/.cache/";
+}

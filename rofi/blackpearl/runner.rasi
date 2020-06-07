@@ -1,0 +1,61 @@
+/*
+ * BLACKPEARL runner rofi theme
+ * tested on a 1366x768 screen
+ */
+
+/* IMPORTS */
+@import "shared/settings.rasi"
+@import "shared/reset.rasi"
+
+
+#scrollbar {
+	enabled: false;
+}
+#window {
+	anchor: north;
+	location: north;
+	width: 600px;
+	height: 400px;
+	margin: 20px 0 0;
+	background-color: @transparent;
+}
+#mainbox {
+	background-color: @bg-trans;
+	children: [ inputbar, listview ];
+    border:  0;
+    padding: 0;
+}
+#inputbar {
+	/*padding: 40px 383px 10px;*/
+}
+#prompt {
+	enabled: false;
+}
+#entry {
+	text-color: @accent;
+	background-color: @bg-focus;
+	border: 1px solid;
+	border-color: @accent;
+	border-radius: 5px;
+	padding: 10px; 
+	horizontal-align: 0.0;
+	vertical-align: 0.5;
+	placeholder: "enter app to search...";
+	placeholder-color: @fg;
+}
+#listview {
+	margin: 60px 0;
+	columns: 1;
+	lines: 12;
+	expand: false;
+	/*cycle: true;*/
+	spacing: 10px;
+	/*padding: 50px 10px;*/
+}
+#element {
+	text-color: @fg;
+}
+#element.selected {
+	background-color: @bg-focus;
+	text-color: @accent;
+}

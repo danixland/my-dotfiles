@@ -1,0 +1,48 @@
+/*
+ * BLACKPEARL appsmenu rofi theme
+ * tested on a 1366x768 screen
+ */
+
+/* IMPORTS */
+@import "shared/settings.rasi"
+@import "shared/reset.rasi"
+
+
+#scrollbar {
+	enabled: false;
+}
+#window {
+	font: "Hurmit Nerd Font Mono 75";
+	fullscreen: true;
+	transparency: "real";
+	background-color: @bg-trans;
+}
+#mainbox {
+	children: [ listview ];
+    border:  0;
+    padding: 0;
+}
+#listview {
+	columns: 3;
+	lines: 1;
+	expand: false;
+	spacing: 90px;
+	padding: 284px 453px;
+	orientation: horizontal;
+}
+#element {
+	border: 1;
+	border-radius: 24;
+	border-color: @accent;
+	text-color: @accent;
+	background-color: @bg;
+	orientation: vertical;
+	padding: -30 60 30;
+	horizontal-align: 0.5;
+	vertical-align: 0.5;
+}
+#element.selected {
+	text-color: @bg;
+	background-color: @accent;
+}
+

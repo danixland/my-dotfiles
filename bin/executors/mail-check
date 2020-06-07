@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+
+"""
+A very simple imap e-mail notifier.
+Tested (and working) with Debian 8 (Jessie) + Xfce.
+"""
+
+import imaplib
+import re
+import time
+import sys
+import os
+import argparse
+
+
+def MainProgram():
+    server_error = 0
+    status = ""
+    unread = 0
+
+    parser = argparse.ArgumentParser(description='Check your email.')
+    parser.add_argument("-g", "--gmail", help="connect to gmail imap server", action="store_true")
+    parser.add_argument("-c", "--custom", help="connect to custom imap server", type=str, default=argparse.SUPPRESS)
+    parser.add_argument("-u", "--user", help="Username", type=str, required=True)
+    parser.add_argument("-p", "--pword", help="Password", type=str, required=True)
+    parser.add_argument("-r", "--port", help="Port to connect to", default="993", type=int)
+    parser.add_argument("-d", "--display", help="Display Name", type=str)
+
+    args = parser.parse_args()
+
+    if args.gmail:
+        imapServer = "imap.gmail.com"
+    else:
+        if args.custom:
+            imapServer = args.custom
+
+    if args.display:
+        displayName = args.display
+    else:
+        displayName = imapUserName
+
+    try:
+        imapUserName = args.user
+    except Exception as e:
+        raise
+
+    try:
+        imapPass = args.pword
+    except Exception as e:
+        raise
+
+    try:
+        imapPort = args.port
+    except Exception as e:
+        raise
+
+
+    # # Enter your imap settings below
+    # imapServer = "imap.gmail.com"
+    # # imapUserName = "danixland@gmail.com"
+    # imapUserName = "it.danilo.macri@gmail.com"
+    # # imapPass = "jxibrnebktqbkhmx"
+    # imapPass = "udykutvueszpxfkd"
+    # imapPort = 993
+    # # displayName = "gmail - danixland"
+    # displayName = "gmail - Danilo Macri"
+ 
+    # Try to connect to imap server
+    try:
+        server = imaplib.IMAP4_SSL(imapServer, imapPort)
+        server.login(imapUserName, imapPass)
+        status, unread = server.status('INBOX', "(UNSEEN)")
+    except Exception:
+        pass
+
+    if status != "OK":
+        server_error = 1
+ 
+    # Retry a couple of times even though we got wrong response from server
+    while server_error >= 1 and server_error < 4:
+        time.sleep(2)
+        if status == "OK":
+            server_error = 0
+        else:
+            server_error += 1
+            MainProgram() # Try to connect again
+
+    CHECK_UNREAD = str(unread)
+    NO_OF_UNREAD = re.sub(r'\D', "", CHECK_UNREAD)
+
+    if server_error > 3:
+        # os.system('notify-send "Problem connecting to imap server"')
+        print("Problem connecting to imap server")
+    elif int(NO_OF_UNREAD) > 0:
+        # os.system('notify-send "You have new mail"')
+        print("/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/new-messages-red.svg")
+        print("{}: {} new mail".format(displayName, NO_OF_UNREAD))
+    elif int(NO_OF_UNREAD) == 0:
+        print("/usr/share/icons/MB-Mango-Suru-GLOW/panel/16/applications-email-panel.svg")
+        print("{}: No new mail".format(displayName))
+
+ 
+MainProgram()

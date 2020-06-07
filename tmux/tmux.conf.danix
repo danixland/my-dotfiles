@@ -1,0 +1,208 @@
+# -- general -------------------------------------------------------------------
+# scrollback size
+set -g history-limit 10000
+
+## set the default TERM
+set -g default-terminal screen
+## update the TERM variable of terminal emulator when creating a new session or attaching a existing session
+set -g update-environment 'DISPLAY SSH_ASKPASS SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY TERM'
+## determine if we should enable 256-colour support
+if "[[ ${TERM} =~ 256color || ${TERM} == fbterm ]]" 'set -g default-terminal screen-256color'
+
+setw -g xterm-keys on
+# faster command sequences
+set -s escape-time 10
+# increase repeat timeout
+set -sg repeat-time 600
+set -s focus-events on
+# rename window to reflect current program
+setw -g automatic-rename on
+# renumber windows when a window is closed
+set -g renumber-windows on
+# set terminal title
+set -g set-titles on
+# slightly longer pane indicators display time
+set -g display-panes-time 800
+# slightly longer status messages display time
+set -g display-time 1000
+# redraw status line every 5 seconds
+set -g status-interval 5
+
+# -- bindings ------------------------------------------------------------------
+# Changing ctrl b to ctrl Space as the command button
+unbind C-b
+set -g prefix C-Space
+
+# set first window to index 1 (not 0) to map more to the keyboard layout
+set -g base-index 1
+set -g pane-base-index 1
+
+# Keep your finger on ctrl, or don't, same result
+bind-key C-d detach-client
+# bind-key C-p paste-buffer
+
+# reload tmux config with ctrl + a + r
+ unbind r
+ bind-key r \
+     source-file ~/.tmux.conf \;\
+         display 'Reloaded tmux config.'
+
+# Vertical splits with v or C-v
+unbind g 
+unbind C-g
+bind-key v split-window -h
+bind-key C-v split-window -h
+
+# Horizontal splits with h or C-h
+unbind h
+unbind C-h
+bind-key h split-window
+bind-key C-h split-window
+
+# F8 rename window
+# unbind F8
+# unbind C-F8
+bind-key -n F8 command-prompt 'rename-window %%'
+
+# Ctrl - t or t new window
+# unbind t
+# unbind C-t
+# bind-key t new-window
+bind-key -n C-t new-window
+
+# Ctrl - w or w to kill panes
+# unbind w
+# unbind C-w
+# bind-key w kill-pane
+bind-key -n C-w kill-pane
+
+# C + control q to kill session
+# unbind q
+# unbind C-q
+# bind-key q kill-session
+bind-key -n C-q kill-session
+
+# Switching panes with Ctrl
+bind-key -n C-Left select-pane -L
+bind-key -n C-Right select-pane -R
+bind-key -n C-Up select-pane -U
+bind-key -n C-Down select-pane -D
+
+# Ctrl + a + n : New session
+unbind n
+unbind C-n
+bind-key n new-session
+bind-key C-n new-session
+
+# Ctrl + a + Pagedown : Next window
+unbind Pagedown
+bind-key -n C-Pagedown next-window
+
+# Ctrl + a + Pagup : Previous window
+unbind Pageup
+bind-key -n C-Pageup previous-window
+
+# Visual Activity Monitoring between windows
+setw -g monitor-activity on
+set -g visual-activity off
+
+# -- default session -----------------------------------------------------------
+new -s local -n danix
+neww -n root su -
+neww -n top htop
+neww -n syswatch tail -f /var/log/messages
+splitw -v -p 50 -t 1 /home/danix/bin/my_netstat
+selectw -t 2
+selectp -t 1
+
+# -- copy mode -----------------------------------------------------------------
+
+bind-key Enter copy-mode # enter copy mode
+
+run -b 'tmux bind -t vi-copy v begin-selection 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi v send -X begin-selection 2> /dev/null || true'
+run -b 'tmux bind -t vi-copy C-v rectangle-toggle 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi C-v send -X rectangle-toggle 2> /dev/null || true'
+run -b 'tmux bind -t vi-copy y copy-selection 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi y send -X copy-selection-and-cancel 2> /dev/null || true'
+run -b 'tmux bind -t vi-copy Escape cancel 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi Escape send -X cancel 2> /dev/null || true'
+run -b 'tmux bind -t vi-copy H start-of-line 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi H send -X start-of-line 2> /dev/null || true'
+run -b 'tmux bind -t vi-copy L end-of-line 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi L send -X end-of-line 2> /dev/null || true'
+
+# copy to X11 clipboard (needs xclip)
+if -b 'command -v xclip > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xclip -i -selection clipboard >/dev/null 2>&1"'
+
+
+# -- buffers -------------------------------------------------------------------
+
+bind-key b list-buffers  # list paste buffers
+bind-key p paste-buffer  # paste from the top paste buffer
+bind-key P choose-buffer # choose which buffer to paste from
+
+
+# --theme ----------------------------------------------------------------------
+
+# set -goqF @blackpearl-console-background colour59
+# set -goqF @blackpearl-console-orange colour11
+# set -goqF @blackpearl-console-dark-grey colour102
+
+set -goqF @blackpearl-standard-background colour0
+set -goqF @blackpearl-orange colour3
+set -goqF @blackpearl-dark-grey colour8
+
+set -goqF @theme-clock-mode-colour "#{@blackpearl-orange}"
+set -goq  @theme-clock-mode-style 24
+
+
+set -goq @blackpearl-status-left-area-left-format "\[ #h \]"
+set -goq @blackpearl-status-left-area-middle-format "#(whoami)"
+set -goq @blackpearl-status-left-area-right-format ""
+
+set -goq @blackpearl-status-right-area-left-format ""
+set -goq @blackpearl-status-right-area-middle-format "[ %d-%b-%y ]"
+set -goq @blackpearl-status-right-area-right-format "[ %H:%M:%S ]"
+
+set -goq @blackpearl-window-status-current-format "( #I:#W )"
+set -goq @blackpearl-window-status-format "#I:#W"
+
+set -goqF @theme-status-left "#{@blackpearl-status-left-area-left-format} #{@blackpearl-status-left-area-middle-format} #{@blackpearl-status-left-area-right-format}"
+set -goqF @theme-status-right "#{@blackpearl-status-right-area-left-format} #{@blackpearl-status-right-area-middle-format} #{@blackpearl-status-right-area-right-format}"
+set -gqF @theme-window-status-current-format "#{@blackpearl-window-status-current-format}"
+set -gqF @theme-window-status-format "#{@blackpearl-window-status-format}"
+
+set -gF status-justify centre
+# empty part of the status bar
+set -gF  status-style "fg=#{@blackpearl-orange},bg=#{@blackpearl-standard-background}"
+
+set -gF  status-left-length "40"
+set -gF  status-right-length "150"
+set -gF status-left "#{@theme-status-left}"
+# set -gF status-left "[ #h ] ♥ #(cat /etc/slackware-version)"
+set -gF status-left-style "fg=#{@blackpearl-orange},bg=#{@blackpearl-standard-background}"
+set -gF status-right "#{@theme-status-right}"
+# set -gF status-right "%d-%b-%y | %H:%M:%S"
+set -gF status-right-style "fg=#{@blackpearl-orange},bg=#{@blackpearl-standard-background}"
+
+set -gwF window-status-current-format "#{@theme-window-status-current-format}"
+set -gwF window-status-format "#{@theme-window-status-format}"
+set -gwF window-status-activity-style "fg=#{@blackpearl-orange},bg=#{@blackpearl-standard-background}"
+set -gwF window-status-current-style "fg=#{@blackpearl-dark-grey},bg=#{@blackpearl-orange}"
+
+set -gF  message-command-style "fg=#{@blackpearl-dark-grey},bg=#{@blackpearl-orange}"
+set -gF  message-style "fg=#{@blackpearl-dark-grey},bg=#{@blackpearl-orange}"
+set -gwF clock-mode-colour "#{@theme-clock-mode-colour}"
+set -gwF clock-mode-style "#{@theme-clock-mode-style}"
+
+# set-option -g status-style bg=colour220,fg=colour233
+# set-option -g pane-active-border-bg "#ff0000"
+# set -gq @themepack-status-left-area-right-format ""
+# set -gq @themepack-status-right-area-middle-format "#h"
+# set -gq @themepack-status-right-area-right-format "%d-%b-%y"
+# set -gq @powerline-status-bg "ffbf00"
+# set -g @themepack 'powerline/block/yellow'
+
+# run tmux-plugin-manager
+# run -b '~/.tmux/plugins/tpm/tpm'
