@@ -8,43 +8,51 @@ if [ -f /etc/profile.d/bash_completion.sh ]; then
  . /etc/profile.d/bash_completion.sh
 fi
 
-# actual theme "MATERIAL DARK"
-#if [ "$TERM" = "linux" ]; then
-#    echo -en "\e]P0303030"
-#    echo -en "\e]P1d32f2f"
-#    echo -en "\e]P2388e3c"
-#    echo -en "\e]P3f57c00"
-#    echo -en "\e]P4303f9f"
-#    echo -en "\e]P5c51162"
-#    echo -en "\e]P61976d2"
-#    echo -en "\e]P7bdbdbd"
-#    echo -en "\e]P8424242"
-#    echo -en "\e]P9e57373"
-#    echo -en "\e]PA81c784"
-#    echo -en "\e]PBffb74d"
-#    echo -en "\e]PC7986cb"
-#    echo -en "\e]PDff4081"
-#    echo -en "\e]PE64b5f6"
-#    echo -en "\e]PFf5f5f5"
-#    clear
-#fi
-
 user_color=32m
 if [ ${UID} -eq 0 ]
 then
         user_color=31m
 fi
 
-PS1='[\[\e[$user_color\]\u\[\e[37m\]@\[\e[34m\]\h \[\e[37m\]- \w] \d \t\n$(__git_ps1)\\$ '
-
-case "$TERM" in
-    xterm*|*rxvt*)
-	    PROMPT_COMMAND='echo -ne "\033]0;${USER}@`echo $HOSTNAME|cut -d"." -f1`: ${PWD}\007"'
-        ;;
-    *)
-	    PROMPT_COMMAND=""
-        ;;
-esac
+bash_prompt() {
+    local NONE="\[\033[0m\]"    # unsets color to term's fg color
+    
+    # regular colors
+    local K="\[\033[0;30m\]"    # black
+    local R="\[\033[0;31m\]"    # red
+    local G="\[\033[0;32m\]"    # green
+    local Y="\[\033[0;33m\]"    # yellow
+    local B="\[\033[0;34m\]"    # blue
+    local M="\[\033[0;35m\]"    # magenta
+    local C="\[\033[0;36m\]"    # cyan
+    local W="\[\033[0;37m\]"    # white
+    
+    # emphasized (bolded) colors
+    local EMK="\[\033[1;30m\]"
+    local EMR="\[\033[1;31m\]"
+    local EMG="\[\033[1;32m\]"
+    local EMY="\[\033[1;33m\]"
+    local EMB="\[\033[1;34m\]"
+    local EMM="\[\033[1;35m\]"
+    local EMC="\[\033[1;36m\]"
+    local EMW="\[\033[1;37m\]"
+    
+    # background colors
+    local BGK="\[\033[40m\]"
+    local BGR="\[\033[41m\]"
+    local BGG="\[\033[42m\]"
+    local BGY="\[\033[43m\]"
+    local BGB="\[\033[44m\]"
+    local BGM="\[\033[45m\]"
+    local BGC="\[\033[46m\]"
+    local BGW="\[\033[47m\]"
+    
+    local UC=$EMG                 # user's color
+    [ $UID -eq "0" ] && UC=$EMR   # root's color
+    
+    PS1="${UC}\u ${NONE}@ ${EMB}\h ${NONE}{ ${M}\d ${NONE}} ${G}[ ${NONE}\w ${G}] ${NONE}\n\# ${UC}\\$> ${NONE}"
+}
+bash_prompt
 
 alias su="su -"
 alias ls="ls --color -lh"
@@ -59,6 +67,18 @@ alias df="df -h"
 alias du="du -sh"
 alias diff='diff --color=auto'
 alias grep='grep --color=auto'
+alias path='(IFS=:;ls -1d $PATH |  nl)'
+alias hf='history|grep'
+
+# history as big as possible!!
+HISTSIZE=1000000
+HISTFILESIZE=2000000
+HISTIGNORE='hf *'
+# unix.stackexchange.com/a/18443
+# history: erase duplicates...
+HISTCONTROL=ignoreboth:erasedups
+shopt -s histappend
+
 
 
 export PATH=~/.local/bin:~/bin:$PATH
@@ -105,4 +125,10 @@ export GPG_TTY
 if [ -x "$(which gpg-connect-agent)" ]; then
 	gpg-connect-agent updatestartuptty /bye >& /dev/null
 fi
+
+mount-fs () {
+    ( echo Filesystem Mountpoint Fstype;
+      mount | \grep -E '^[^[:lower:]_-]+' | awk '{print $1,$3,$5}'
+    ) | column -t
+}
 
