@@ -39,7 +39,7 @@ set $ws2 "2:editor"
 set $ws3 "3:console"
 set $ws4 "4:ssh"
 set $ws5 "5:graphic"
-set $ws6 "6:unused"
+set $ws6 "6:editor2"
 set $ws7 "7:unused"
 set $ws8 "8:music"
 
@@ -61,18 +61,20 @@ floating_modifier $win
 bindsym $alt+Return exec urxvt
 
 # custom binding
+bindsym Shift+$ctrl+l exec --no-startup-id xclip -o | qrencode -o - | feh -Z -
 bindsym Print exec --no-startup-id blackpearl-scrotmenu.sh
-bindsym $alt+Menu exec --no-startup-id blackpearl-utilsmenu.sh           
+bindsym $alt+Menu exec --no-startup-id blackpearl-utilsmenu.sh
 bindsym $alt+Escape --release exec xkill
 bindsym $win+e exec pcmanfm-qt
 #bindsym $win+x exec --no-startup-id i3-exit
 bindsym $win+l exec --no-startup-id i3lock-fancy
-bindsym $win+w exec chromium-browser
+bindsym $win+t exec --no-startup-id typora
+bindsym $win+w exec vivaldi
 bindsym XF86Calculator exec kcalc
 bindsym XF86Sleep exec i3suspend
-bindsym $win+Shift+w exec "chromium-browser --incognito"
+bindsym $win+Shift+w exec "vivaldi --incognito"
 bindsym $win+h exec --no-startup-id blackpearl-sshmenu.sh
-bindsym $win+r exec sublime_text
+bindsym $win+r exec atom
 bindsym XF86HomePage exec --no-startup-id blackpearl-appsmenu.sh
 bindsym $win+p exec uxterm -T "spt" -geometry 90x30+800+30 -e spt
 
@@ -175,8 +177,9 @@ bindsym $win+Next workspace next
 # assign programs to specific workspaces
 assign [title="ssh"] $ws4
 assign [class="URxvt"] $ws3
-assign [class="Sublime_text"] $ws2
-assign [class="Chromium"] $ws1
+assign [class="Atom"] $ws2
+assign [class="Typora"] $ws6
+assign [class="vivaldi-stable"] $ws1
 assign [class="gimp-2.10"] $ws5
 assign [title="^spt$"] $ws8
 
@@ -275,20 +278,8 @@ mode "$wine_gaps_inner" {
 }
 
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-# bar {
-# 	tray_output none
-# 	workspace_buttons no
-
-#         status_command i3status
-#         status_command exec /home/danix/bin/i3-netspeed.sh
-# 	position top
-# 	font pango:Droid Sans Mono 9
-# 	colors {
-# 		background #1f1f1f
-# 	}	
-# }
+# start kdeconnect
+exec --no-startup-id kdeconnect-indicator
 
 # start tint2 i3status
 exec --no-startup-id tint2 -c ~/.config/tint2/i3status.tint2rc
@@ -301,9 +292,6 @@ exec --no-startup-id start-pulseaudio-x11
 
 # start networkmanager applet
 exec --no-startup-id nm-applet
-
-# start lxqt-powermanager
-# exec --no-startup-id lxqt-powermanagement
 
 # start lxqt-notificationd
 #exec --no-startup-id lxqt-notificationd
