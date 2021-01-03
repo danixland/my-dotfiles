@@ -1,8 +1,3 @@
-export GIT_PS1_SHOWCOLORHINTS=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWSTASHSTATE=true
-
 # turns on bash autocompletion
 if [ -f /etc/profile.d/bash_completion.sh ]; then
  . /etc/profile.d/bash_completion.sh
@@ -47,12 +42,23 @@ bash_prompt() {
     local BGC="\[\033[46m\]"
     local BGW="\[\033[47m\]"
     
-    local UC=$EMG                 # user's color
-    [ $UID -eq "0" ] && UC=$EMR   # root's color
+    local UC=$EMG
+    [ $UID -eq "0" ] && UC=$EMR
     
-    PS1="${UC}\u ${NONE}@ ${EMB}\h ${NONE}{ ${M}\d ${NONE}} ${G}[ ${NONE}\w ${G}] ${NONE}\n\# ${UC}\\$> ${NONE}"
+    PS1="${UC}\u ${NONE}@ ${EMB}\h ${NONE}{ ${M}\d ${NONE}} ${W}${BGG}[ \w ]${NONE}\n\#$(__git_ps1) ${UC}\\$> ${NONE}"
 }
-bash_prompt
+export PROMPT_COMMAND=bash_prompt
+
+# turns on git prompt
+if [ -f /home/danix/.git-prompt.sh ]; then
+    GIT_PS1_SHOWDIRTYSTATE=true
+    GIT_PS1_SHOWSTASHSTATE=true
+    GIT_PS1_SHOWUNTRACKEDFILES=true
+    GIT_PS1_SHOWUPSTREAM="auto"
+    GIT_PS1_HIDE_IF_PWD_IGNORED=true
+    GIT_PS1_SHOWCOLORHINTS=true
+    . /home/danix/.git-prompt.sh
+fi
 
 alias su="su -"
 alias ls="ls --color -lh"
@@ -81,7 +87,7 @@ shopt -s histappend
 
 
 
-export PATH=~/.local/bin:~/bin:$PATH
+export PATH=~/.config/composer/vendor/bin:~/.local/bin:~/bin:$PATH
 export INTEL_BATCH=1
 export QT_QPA_PLATFORMTHEME="lxqt"
 export QT_STYLE_OVERRIDE="kvantum-dark"
@@ -118,12 +124,11 @@ logdate() {
 unset GPG_AGENT_INFO
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-	export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
-GPG_TTY=$(tty)
-export GPG_TTY
+export GPG_TTY=$(tty)
 if [ -x "$(which gpg-connect-agent)" ]; then
-	gpg-connect-agent updatestartuptty /bye >& /dev/null
+	gpg-connect-agent updatestartuptty /bye > /dev/null
 fi
 
 mount-fs () {

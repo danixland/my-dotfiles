@@ -59,8 +59,10 @@ XTerm*reverseVideo: on
 XTerm*selectToClipboard: true
 
 URxvt*termName: rxvt-unicode-256color
-URxvt.font: xft:Inconsolata:Bold:pixelsize=14
-URxvt.boldFont: xft:Inconsolata:Black:pixelsize=14
+!URxvt.font: xft:Space Mono:Regular:pixelsize=14
+!URxvt.boldFont: xft:Space Mono:Bold:pixelsize=14
+URxvt.font: xft:Source Code Pro:Regular:pixelsize=14
+URxvt.boldFont: xft:Source Code Pro:Bold:pixelsize=14
 URxvt.geometry: 120x30
 URxvt.depth: 32
 URxvt.letterSpace: 1
