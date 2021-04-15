@@ -40,7 +40,7 @@ set $ws3 "3:console"
 set $ws4 "4:ssh"
 set $ws5 "5:graphic"
 set $ws6 "6:editor2"
-set $ws7 "7:unused"
+set $ws7 "7:chat"
 set $ws8 "8:music"
 
 # per workspace gaps
@@ -67,8 +67,9 @@ bindsym $alt+Menu exec --no-startup-id blackpearl-utilsmenu.sh
 bindsym $alt+Escape --release exec xkill
 bindsym $win+e exec pcmanfm-qt
 #bindsym $win+x exec --no-startup-id i3-exit
+bindsym $win+s exec --no-startup-id wol d4:c9:ef:f1:c9:24
 bindsym $win+l exec --no-startup-id i3lock-fancy
-bindsym $win+t exec --no-startup-id typora
+bindsym $win+t exec flatpak run io.typora.Typora
 bindsym $win+w exec vivaldi
 bindsym XF86Calculator exec kcalc
 bindsym XF86Sleep exec i3suspend
@@ -77,6 +78,7 @@ bindsym $win+h exec --no-startup-id blackpearl-sshmenu.sh
 bindsym $win+r exec atom
 bindsym XF86HomePage exec --no-startup-id blackpearl-appsmenu.sh
 bindsym $win+p exec uxterm -T "spt" -geometry 90x30+800+30 -e spt
+bindsym $win+Shift+t exec flatpak run org.telegram.desktop
 
 # window switching bindings
 bindsym $alt+Tab exec --no-startup-id "blackpearl-window.sh desktop"
@@ -179,7 +181,8 @@ assign [title="ssh"] $ws4
 assign [class="URxvt"] $ws3
 assign [class="Atom"] $ws2
 assign [class="Typora"] $ws6
-assign [class="vivaldi-stable"] $ws1
+assign [class="Vivaldi-stable"] $ws1
+assign [class="Telegram"] $ws7
 assign [class="gimp-2.10"] $ws5
 assign [title="^spt$"] $ws8
 
@@ -294,11 +297,13 @@ exec --no-startup-id start-pulseaudio-x11
 exec --no-startup-id nm-applet
 
 # start lxqt-notificationd
-#exec --no-startup-id lxqt-notificationd
-exec --no-startup-id dunst
+exec --no-startup-id lxqt-notificationd
+#exec --no-startup-id dunst
 
 # start keepassxc
-exec --no-startup-id keepassxc
+#exec --no-startup-id keepassxc
+# start qtpass
+exec --no-startup-id qtpass
 
 # start audio icon
 exec --no-startup-id pnmixer
