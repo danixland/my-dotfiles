@@ -4,8 +4,6 @@
  */
 
 /* IMPORTS */
-
-/* IMPORTS */
 @import "shared/settings.rasi"
 @import "shared/reset.rasi"
 
@@ -44,7 +42,6 @@
 	lines: 1;
 	expand: false;
 	spacing: 90px;
-	/*margin: -294px 0 0;*/
 	padding: 34px 453px 254px;
 	orientation: horizontal;
 }

@@ -37,7 +37,7 @@
 	text-color: @accent;
 	background-color: @bg;
 	orientation: vertical;
-	padding: -30 60 30;
+	padding: 30 60 30;
 	horizontal-align: 0.5;
 	vertical-align: 0.5;
 }
@@ -45,4 +45,3 @@
 	text-color: @bg;
 	background-color: @accent;
 }
-

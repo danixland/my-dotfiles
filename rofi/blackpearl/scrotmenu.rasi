@@ -23,11 +23,12 @@
     padding: 0;
 }
 #listview {
-	columns: 3;
+	columns: 2;
 	lines: 1;
 	expand: false;
-	spacing: 60px;
-	padding: 284px 343px;
+	spacing: 90px;
+	padding: 254px 453px;
+	/* padding: 284px 343px; */
 	orientation: horizontal;
 }
 #element {
@@ -37,7 +38,7 @@
 	text-color: @accent;
 	background-color: @bg;
 	orientation: vertical;
-	padding: -30 60 30;
+	padding: 30 60 30;
 	horizontal-align: 0.5;
 	vertical-align: 0.5;
 }
@@ -45,4 +46,3 @@
 	text-color: @bg;
 	background-color: @accent;
 }
-

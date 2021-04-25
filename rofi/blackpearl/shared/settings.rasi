@@ -1,14 +1,14 @@
 configuration {
-	modi: "window,drun,ssh";
+	modi: "run,window,drun,ssh";
 	font: "Droid Sans Mono 12";
-    /*drun-display-format: "{icon} {name}\n<span weight='light' size='small'><i>{generic}</i></span>";*/
 	drun-display-format: "{icon} <span weight='light' size='small'><i>{name}</i></span>";
     display-drun: "Apps";
 	show-icons: true;
-	icon-theme: "breeze-dark";
+	icon-theme: "MB-Mango-Suru-GLOW";
+	drun-match-fields: "name,generic,exec,category";
 	hide-scrollbar: true;
 	cycle: true;
-    fullscreen: true;
+/*    fullscreen: true;*/
 	sidebar-mode: false;
 	terminal: "urxvt";
 	ssh-client: "ssh";

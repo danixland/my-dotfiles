@@ -32,9 +32,10 @@
 #entry {
 	background-color: @bg-focus;
 	border: 1px solid;
-	border-color: @fg-list;
+	border-color: @accent;
+	color: @accent;
 	border-radius: 5px;
-	padding: 10px; 
+	padding: 10px;
 	horizontal-align: 0.0;
 	vertical-align: 0.5;
 	placeholder: "enter app to search...";
@@ -43,11 +44,11 @@
 
 #listview {
 	columns: 6;
-	lines: 4;
+	lines: 6;
 	expand: false;
 	/*cycle: true;*/
-	spacing: 20px;
-	padding: 50px 10px;
+	spacing: 30px;
+	padding: 80px 10px 50px;
 
 }
 #element {
@@ -56,7 +57,7 @@
 	border-color: @transparent;
 	text-color: @fg;
 	orientation: vertical;
-	padding: 8 12 8 12;
+	padding: 16 24;
 }
 #element.selected {
 	background-color: @bg-focus;
@@ -65,7 +66,7 @@
 #element-icon {
 	horizontal-align: 0.5;
 	vertical-align: 0.5;
-	size: 64;
+	size: 128;
 }
 #element-name {
 	horizontal-align: 0.5;
