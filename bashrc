@@ -3,6 +3,11 @@ if [ -f /etc/profile.d/bash_completion.sh ]; then
  . /etc/profile.d/bash_completion.sh
 fi
 
+# sets buttons on wacom tablet
+if [ -f ~/.local/share/wacomsetter.sh ]; then
+	. ~/.local/share/wacomsetter.sh
+fi
+
 user_color=32m
 if [ ${UID} -eq 0 ]
 then
@@ -11,7 +16,7 @@ fi
 
 bash_prompt() {
     local NONE="\[\033[0m\]"    # unsets color to term's fg color
-    
+
     # regular colors
     local K="\[\033[0;30m\]"    # black
     local R="\[\033[0;31m\]"    # red
@@ -21,7 +26,7 @@ bash_prompt() {
     local M="\[\033[0;35m\]"    # magenta
     local C="\[\033[0;36m\]"    # cyan
     local W="\[\033[0;37m\]"    # white
-    
+
     # emphasized (bolded) colors
     local EMK="\[\033[1;30m\]"
     local EMR="\[\033[1;31m\]"
@@ -31,7 +36,7 @@ bash_prompt() {
     local EMM="\[\033[1;35m\]"
     local EMC="\[\033[1;36m\]"
     local EMW="\[\033[1;37m\]"
-    
+
     # background colors
     local BGK="\[\033[40m\]"
     local BGR="\[\033[41m\]"
@@ -41,10 +46,10 @@ bash_prompt() {
     local BGM="\[\033[45m\]"
     local BGC="\[\033[46m\]"
     local BGW="\[\033[47m\]"
-    
+
     local UC=$EMG
     [ $UID -eq "0" ] && UC=$EMR
-    
+
     PS1="${UC}\u ${NONE}@ ${EMB}\h ${NONE}{ ${M}\d ${NONE}} ${W}${BGG}[ \w ]${NONE}\n\#$(__git_ps1) ${UC}\\$> ${NONE}"
 }
 export PROMPT_COMMAND=bash_prompt
@@ -87,7 +92,7 @@ shopt -s histappend
 
 
 
-export PATH=~/.config/composer/vendor/bin:~/.local/bin:~/bin:$PATH
+export PATH=~/.platformio/penv/bin:~/.config/composer/vendor/bin:~/.local/bin:~/bin:$PATH
 export INTEL_BATCH=1
 export QT_QPA_PLATFORMTHEME="lxqt"
 export QT_STYLE_OVERRIDE="kvantum-dark"
@@ -114,6 +119,9 @@ man() {
 # sudo password helper
 export SUDO_ASKPASS=/usr/bin/lxsudo
 
+# password store directory
+export PASSWORD_STORE_DIR=/home/danix/Programming/GIT/password_store/
+
 # logdate appends a date to a script output
 logdate() {
 	while IFS= read -r line; do
@@ -136,4 +144,3 @@ mount-fs () {
       mount | \grep -E '^[^[:lower:]_-]+' | awk '{print $1,$3,$5}'
     ) | column -t
 }
-
