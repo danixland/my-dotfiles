@@ -9,7 +9,8 @@ setxkbmap -layout it &
 numlockx &
 syndaemon -K -t -R -i 2 -d &
 #xautolock -time 10 -locker i3lock-wrapper -notify 30 -notifier "notify-send 'locking the system' '30 seconds before locking system.' --icon=dialog-warning" &
-compton --dbus --config ~/.config/compton.conf &
+#compton --dbus --config ~/.config/compton.conf &
+picom -b
 #conky -c ~/.config/conky/qlocktwo.conkyrc &
 xdg-user-dirs-update &
 

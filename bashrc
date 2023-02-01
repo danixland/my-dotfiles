@@ -3,11 +3,6 @@ if [ -f /etc/profile.d/bash_completion.sh ]; then
  . /etc/profile.d/bash_completion.sh
 fi
 
-# sets buttons on wacom tablet
-if [ -f ~/.local/share/wacomsetter.sh ]; then
-	. ~/.local/share/wacomsetter.sh
-fi
-
 user_color=32m
 if [ ${UID} -eq 0 ]
 then
@@ -50,9 +45,10 @@ bash_prompt() {
     local UC=$EMG
     [ $UID -eq "0" ] && UC=$EMR
 
-    PS1="${UC}\u ${NONE}@ ${EMB}\h ${NONE}{ ${M}\d ${NONE}} ${W}${BGG}[ \w ]${NONE}\n\#$(__git_ps1) ${UC}\\$> ${NONE}"
+    PS1="${UC}\u ${NONE}@ ${EMB}\h ${NONE}{ ${M}\d ${NONE}} ${W}${BGY}${EMK}[ \w ]${NONE}\n\#$(__git_ps1) ${UC}\\$> ${NONE}"
 }
 export PROMPT_COMMAND=bash_prompt
+printf "\033]0;%s@%s\007" "${LOGNAME}" "${HOSTNAME%%.*}"
 
 # turns on git prompt
 if [ -f /home/danix/.git-prompt.sh ]; then
@@ -92,7 +88,8 @@ shopt -s histappend
 
 
 
-export PATH=~/.platformio/penv/bin:~/.config/composer/vendor/bin:~/.local/bin:~/bin:$PATH
+#export PATH=~/.platformio/penv/bin:~/.config/composer/vendor/bin:~/.local/bin:~/bin:$PATH
+export PATH=~/.config/composer/vendor/bin:~/.local/bin:~/bin:$PATH
 export INTEL_BATCH=1
 export QT_QPA_PLATFORMTHEME="lxqt"
 export QT_STYLE_OVERRIDE="kvantum-dark"
