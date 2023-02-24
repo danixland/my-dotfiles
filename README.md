@@ -4,7 +4,7 @@ This is the collection of dotfiles that I use on my laptop for ricing pourposes
 
 ## Getting Started
 
-All of these files will go in your home directory. See [Installing](#installing) for a brief description of where to put each file in this repository.
+Most of these files will go in your home directory. See [Installing](#installing) for a brief description of where to put each file in this repository.
 
 ### Prerequisites
 
